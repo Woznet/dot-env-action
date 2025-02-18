@@ -26,13 +26,13 @@ const exportEnvVariables = (env: Record<string, string>): void =>
 const main = async (): Promise<void> => {
   try {
     const input: IInput = {
-      pathToFolder: core.getInput('path')?.trim() || '.',  // Always a valid string
-      mode: core.getInput('mode')?.trim() || '', // Always a valid string
-      loadMode: (core.getInput('load-mode')?.trim() as 'strict' | 'skip') || 'strict', // Always 'strict' or 'skip'
+      pathToFolder: core.getInput('path')?.trim() || '.',
+      mode: core.getInput('mode')?.trim() || '',
+      loadMode: (core.getInput('load-mode')?.trim() as 'strict' | 'skip') || 'strict',
     }
 
-    const filePath = generatePathToFile(input.pathToFolder, input.mode) // Now always valid
-    const content = await readFile(filePath, input.loadMode) // Now always valid
+    const filePath = generatePathToFile(input.pathToFolder, input.mode)
+    const content = await readFile(filePath, input.loadMode)
     const env = parseEnv(content)
     exportEnvVariables(env)
   } catch (error) {
