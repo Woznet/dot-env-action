@@ -1,0 +1,14 @@
+import { DotenvParseOutput } from 'dotenv';
+
+export interface IInput
+{
+    pathToFolder?: string;
+    mode?: string;
+    loadMode?: 'strict' | 'skip';
+}
+
+export type IGeneratePathToFile = ( folder: string, mode: string ) => string;
+export type IReadFile = ( filePath: string, loadMode: 'strict' | 'skip' ) => Promise<string>;
+export type IParseEnv = ( content: string ) => Record<string, string>;
+export type ISetEnvVariable = ( key: [ string, string ] ) => void;
+export type IExportEnvVariables = ( env: Record<string, string> ) => void;
