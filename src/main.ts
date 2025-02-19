@@ -20,10 +20,21 @@ const convertJsonToEnv = (jsonString: string): string => {
   }
 };
 
+// Function to ensure the .env file exists (create it if missing)
+const ensureEnvFileExists = async (filePath: string): Promise<void> => {
+  try {
+    await fs.access(filePath);
+  } catch {
+    await fs.writeFile(filePath, '', 'utf8'); // Create a blank .env file
+    core.info(`Created a blank .env file at: ${filePath}`);
+  }
+};
+
 // Function to write .env file
 const writeEnvFile = async (filePath: string, content: string): Promise<void> => {
   try {
     await fs.writeFile(filePath, content, 'utf8');
+    core.info(`.env file successfully created at: ${filePath}`);
   } catch (error) {
     throw new Error(`Failed to write .env file: ${error.message}`);
   }
@@ -61,11 +72,13 @@ const main = async (): Promise<void> => {
     const filePath = generatePathToFile(pathToFolder, mode);
     let content = '';
 
+    // Ensure the .env file exists before processing
+    await ensureEnvFileExists(filePath);
+
     // If JSON secret is provided, convert it to .env format
     if (jsonSecret) {
       content = convertJsonToEnv(jsonSecret);
       await writeEnvFile(filePath, content);
-      core.info(`.env file created from JSON secret: ${filePath}`);
     } else {
       // Otherwise, read the existing .env file
       content = await readFile(filePath, loadMode);
