@@ -1,5 +1,5 @@
-author: Max Romanyuta
-name: Simple Dotenv
+author: Wpznet
+name: dot-env-action
 description: This action will read the .env file and add variables to GITHUB_ENV
 branding:
   icon: box
